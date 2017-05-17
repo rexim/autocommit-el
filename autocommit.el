@@ -45,7 +45,7 @@
   (write-region "((nil . ((eval . (autocommit-dir-locals)))))"
                 nil file-name))
 
-(defun y-or-n-if (predicate question action)
+(defun autocommit--y-or-n-if (predicate question action)
   (when (or (not (funcall predicate))
             (y-or-n-p question))
     (funcall action)))
@@ -68,25 +68,25 @@
   (let* ((autocommit-dir (if dir dir default-directory))
          (file-name (concat autocommit-dir
                             dir-locals-file)))
-    (y-or-n-if (-partial #'file-exists-p file-name)
-                  (format "%s already exists. Replace it?" file-name)
-                  (-partial #'autocommit--create-dir-locals file-name))))
+    (autocommit--y-or-n-if (-partial #'file-exists-p file-name)
+                           (format "%s already exists. Replace it?" file-name)
+                           (-partial #'autocommit--create-dir-locals file-name))))
 
 (defun autocommit-dir-locals ()
   "The function that has to be put into the .dir-locals.el file
 of the autocommit folder as evaluated for any mode."
   (interactive)
   (auto-revert-mode 1)
-  (autopull-changes)
+  (autocommit--autopull-changes)
   (add-hook 'after-save-hook
-            'autocommit-changes
+            'autocommit--autocommit-changes
             nil 'make-it-local))
 
-(defun toggle-autocommit-offline ()
+(defun autocommit-toggle-offline ()
   "Toggle between OFFLINE and ONLINE modes.
 
 Autocommit can be in two modes: OFFLINE and ONLINE. When ONLINE
-autocommit-changes does `git commit && git push'. When OFFLINE
+autocommit--autocommit-changes does `git commit && git push'. When OFFLINE
 autocommit does only `git commit'."
   (interactive)
   (setq autocommit--offline (not autocommit--offline))
@@ -105,7 +105,7 @@ function."
   (setq autocommit--lock nil)
   (setq autocommit--changed nil))
 
-(defun autopull-changes ()
+(defun autocommit--autopull-changes ()
   "Pull the recent changes.
 
 Should be invoked once before working with the content under
@@ -123,7 +123,7 @@ autocommit. Usually put into the dir locals file."
           (setq autocommit--offline t)
           (message "[OFFLINE] NOT Syncing the Agenda"))))))
 
-(defun autocommit-changes ()
+(defun autocommit--autocommit-changes ()
   "Commit all of the changes under the autocommit folder.
 
 Should be invoked each time a change is made. Usually put into
@@ -133,10 +133,10 @@ dir locals file."
       (setq autocommit--changed t)
     (setq autocommit--lock t)
     (setq autocommit--changed nil)
-    (set-process-sentinel (run-commit-process)
-                          'autocommit-beat)))
+    (set-process-sentinel (autocommit--run-commit-process)
+                          'autocommit--beat)))
 
-(defun run-commit-process ()
+(defun autocommit--run-commit-process ()
   (let ((autocommit-message (format-time-string "Autocommit %s")))
     (let ((default-directory "~/Documents/Agenda/"))
       (start-process-shell-command
@@ -147,7 +147,7 @@ dir locals file."
                  "git add -A && git commit -m \"%s\" && git push origin master")
                autocommit-message)))))
 
-(defun autocommit-beat (process event)
+(defun autocommit--beat (process event)
   (message (if autocommit--offline
                "[OFFLINE] Autocommit: %s"
              "Autocommit: %s")
@@ -155,8 +155,8 @@ dir locals file."
   (if (not autocommit--changed)
       (setq autocommit--lock nil)
     (setq autocommit--changed nil)
-    (set-process-sentinel (run-commit-process)
-                          'autocommit-beat)))
+    (set-process-sentinel (autocommit--run-commit-process)
+                          'autocommit--beat)))
 
 (provide 'autocommit)
 
