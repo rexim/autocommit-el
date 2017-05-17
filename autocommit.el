@@ -1,4 +1,4 @@
-;;; autocommit.el --- A mode for autocommiting changes in a particular folder -*- lexical-binding: t -*-
+;;; autocommit.el --- A mode for autocommitting changes in a particular folder -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2017 Alexey Kutepov <reximkut@gmail.com>
 
@@ -27,7 +27,7 @@
 
 ;;; Commentary:
 
-;; A mode for autocommiting changes in a particular folder
+;; A mode for autocommitting changes in a particular folder
 
 ;;; Code:
 
