@@ -43,7 +43,8 @@
   (gethash instance-id autocommit---global-path-to-instance-map))
 
 (defun autocommit---replace-instance (instance-id instance)
-  (puthash instance-id instance autocommit---global-path-to-instance-map))
+  (puthash instance-id instance autocommit---global-path-to-instance-map)
+  instance)
 
 (defun autocommit---create-instance (instance-id)
   (let ((instance (autocommit---new-instance)))
