@@ -50,14 +50,14 @@
   (let ((instance (autocommit--new-instance)))
     (autocommit--replace-instance instance-id instance)))
 
-(defun autocommit--get-or-create-instance (instance-id)
+(defun autocommit--get-create-instance (instance-id)
   (let ((instance (autocommit--get-instance instance-id)))
     (if instance instance
       (autocommit--create-instance instance-id))))
 
 (defun autocommit--swap-instance (folder-path mapper)
   (let* ((instance-id (file-truename folder-path))
-         (instance (autocommit--get-or-create-instance instance-id)))
+         (instance (autocommit--get-create-instance instance-id)))
     (autocommit--replace-instance instance-id (funcall mapper instance))))
 
 (provide 'autocommit--instances)
