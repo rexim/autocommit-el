@@ -31,6 +31,8 @@
 
 ;;; Code:
 
+;;; TODO(7d371cfc-06e3-42a3-91cf-a9d435e9941f): Can we use dynamic scoping to achive that?
+
 (defvar autocommit--global-path-to-instance-map (make-hash-table :test #'equal))
 
 (defun autocommit--new-instance ()

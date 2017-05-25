@@ -38,6 +38,8 @@
 ;;; Once e266bfaa-2a01-4881-9e7f-ce2c592f7cdd is done, I think we can do that.
 
 ;;; TODO(e266bfaa-2a01-4881-9e7f-ce2c592f7cdd): support several autocommit folders simultaneously
+;;; Subtasks:
+;;; - 7d371cfc-06e3-42a3-91cf-a9d435e9941f
 (defvar autocommit--offline nil)
 (defvar autocommit--pull-lock nil)
 (defvar autocommit--lock nil)
